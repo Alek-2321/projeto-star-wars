@@ -6,7 +6,7 @@ import Detalhes from './screens/Detalhes';
 import Filmes from './screens/Filmes';
 import Naves from './screens/Naves';
 import Sobre from './screens/Sobre';
-import { Audio } from 'expo-audio';
+import { Audio } from 'expo-av'; // Correção: expo-av (não expo-audio)
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +29,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Personagens" component={Personagens} options={{ title: 'PERSONAGENS', headerTitleAlign: 'center' }} />
+        <Stack.Screen
+          name="Personagens"
+          component={Personagens}
+          options={{ title: 'PERSONAGENS', headerTitleAlign: 'center' }}
+        />
         <Stack.Screen name="Detalhes" component={Detalhes} />
         <Stack.Screen name="Filmes" component={Filmes} />
         <Stack.Screen name="Naves" component={Naves} />
