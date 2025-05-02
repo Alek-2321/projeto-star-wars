@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Audio } from 'expo-audio'; // Alterado para expo-audio
+import { Audio } from 'expo-av';
 import axios from 'axios';
 
 const Stack = createNativeStackNavigator();
@@ -69,17 +69,6 @@ function DetalhesScreen({ route, navigation }) {
     fetchPersonagem();
   }, [personagemUrl]);
 
-  const tocarMusica = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('./assets/audio/star-wars-intro.mp3') // Verifique se o caminho está correto
-      );
-      await sound.playAsync();
-    } catch (erro) {
-      console.error('Erro ao tocar áudio:', erro);
-    }
-  };
-
   if (!personagem) {
     return <ActivityIndicator size="large" color="#FFD700" />;
   }
@@ -102,18 +91,98 @@ function DetalhesScreen({ route, navigation }) {
         title="Ver Filmes"
         onPress={() => navigation.navigate('Filmes', { filmesUrl: personagem.films })}
       />
-
-      {/* Botão para tocar o áudio */}
-      <Button title="Tocar Música" onPress={tocarMusica} />
     </View>
   );
 }
 
-// As outras telas permanecem iguais...
+function NavesScreen({ route }) {
+  const { navesUrl } = route.params;
+  const [naves, setNaves] = useState([]);
+
+  useEffect(() => {
+    const fetchNaves = async () => {
+      try {
+        const navesPromises = navesUrl.map(url => axios.get(url));
+        const respostas = await Promise.all(navesPromises);
+        setNaves(respostas.map(resposta => resposta.data));
+      } catch (erro) {
+        console.error('Erro ao carregar naves:', erro);
+      }
+    };
+    if (navesUrl) {
+      fetchNaves();
+    }
+  }, [navesUrl]);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.nome}>Naves</Text>
+      {naves.length === 0 ? (
+        <ActivityIndicator size="large" color="#FFD700" />
+      ) : (
+        naves.map((nave, index) => (
+          <View key={index} style={styles.card}>
+            <Text style={styles.nome}>{nave.name}</Text>
+            <Text style={styles.info}>Modelo: {nave.model}</Text>
+            <Text style={styles.info}>Fabricante: {nave.manufacturer}</Text>
+          </View>
+        ))
+      )}
+    </View>
+  );
+}
+
+function FilmesScreen({ route }) {
+  const { filmesUrl } = route.params;
+  const [filmes, setFilmes] = useState([]);
+
+  useEffect(() => {
+    const fetchFilmes = async () => {
+      try {
+        const filmesPromises = filmesUrl.map(url => axios.get(url));
+        const respostas = await Promise.all(filmesPromises);
+        setFilmes(respostas.map(resposta => resposta.data));
+      } catch (erro) {
+        console.error('Erro ao carregar filmes:', erro);
+      }
+    };
+    if (filmesUrl) {
+      fetchFilmes();
+    }
+  }, [filmesUrl]);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.nome}>Filmes</Text>
+      {filmes.length === 0 ? (
+        <ActivityIndicator size="large" color="#FFD700" />
+      ) : (
+        filmes.map((filme, index) => (
+          <View key={index} style={styles.card}>
+            <Text style={styles.nome}>{filme.title}</Text>
+            <Text style={styles.info}>Data de lançamento: {filme.release_date}</Text>
+            <Text style={styles.info}>Diretor: {filme.director}</Text>
+            <Text style={styles.info}>Produtor: {filme.producer}</Text>
+          </View>
+        ))
+      )}
+    </View>
+  );
+}
 
 export default function App() {
   useEffect(() => {
-    // Isso é opcional, já que agora você pode tocar a música diretamente no botão
+    const tocarMusica = async () => {
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require('./assets/audio/star-wars-intro.mp3')
+        );
+        await sound.playAsync();
+      } catch (erro) {
+        console.error('Erro ao tocar áudio:', erro);
+      }
+    };
+    tocarMusica();
   }, []);
 
   return (
