@@ -1,3 +1,4 @@
+// App.js
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,7 +7,7 @@ import Detalhes from './screens/Detalhes';
 import Filmes from './screens/Filmes';
 import Naves from './screens/Naves';
 import Sobre from './screens/Sobre';
-import { Audio } from 'expo-av'; // Correção: expo-av (não expo-audio)
+import { Audio } from 'expo-av';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,17 +23,22 @@ export default function App() {
         console.error('Erro ao tocar áudio:', erro);
       }
     };
-
     tocarMusica();
   }, []);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Personagens">
         <Stack.Screen
           name="Personagens"
           component={Personagens}
-          options={{ title: 'PERSONAGENS', headerTitleAlign: 'center' }}
+          options={{
+            title: 'PERSONAGENS',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: '#000' },
+            headerTintColor: '#FFD700',
+            headerTitleStyle: { fontWeight: 'bold' },
+          }}
         />
         <Stack.Screen name="Detalhes" component={Detalhes} />
         <Stack.Screen name="Filmes" component={Filmes} />

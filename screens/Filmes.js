@@ -1,17 +1,27 @@
-<<<<<<< HEAD
+// screens/Filmes.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
 export default function Filmes({ route }) {
-  const { urls } = route.params;
+  const { filmesUrl } = route.params;
   const [filmes, setFilmes] = useState([]);
 
   useEffect(() => {
-    Promise.all(urls.map(url => axios.get(url)))
-      .then(results => setFilmes(results.map(r => r.data)))
-      .catch(console.error);
+    const fetchFilmes = async () => {
+      try {
+        const responses = await Promise.all(filmesUrl.map(url => axios.get(url)));
+        setFilmes(responses.map(r => r.data));
+      } catch (erro) {
+        console.error('Erro ao carregar filmes:', erro);
+      }
+    };
+    fetchFilmes();
   }, []);
+
+  if (!filmes.length) {
+    return <ActivityIndicator size="large" color="#FFD700" />;
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -20,39 +30,16 @@ export default function Filmes({ route }) {
           <Text style={styles.titulo}>{f.title}</Text>
           <Text style={styles.info}>Diretor: {f.director}</Text>
           <Text style={styles.info}>Produtor: {f.producer}</Text>
-          <Text style={styles.info}>Data de lançamento: {f.release_date}</Text>
+          <Text style={styles.info}>Lançamento: {f.release_date}</Text>
         </View>
       ))}
     </ScrollView>
-=======
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-export default function Filmes() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Aqui estarão os filmes!</Text>
-    </View>
->>>>>>> bb5e5464ad308ec1ac6d127659d7244cf71f78dd
   );
 }
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
   container: { flex: 1, backgroundColor: '#000', padding: 16 },
   card: { backgroundColor: '#1c1c1c', padding: 16, borderRadius: 10, marginBottom: 10 },
   titulo: { color: '#FFD700', fontSize: 18, fontWeight: 'bold' },
   info: { color: '#fff', marginTop: 5 },
-=======
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-  },
-  text: {
-    color: '#FFD700',
-    fontSize: 18,
-  },
->>>>>>> bb5e5464ad308ec1ac6d127659d7244cf71f78dd
 });

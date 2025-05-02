@@ -1,12 +1,7 @@
 {
   "expo": {
-<<<<<<< HEAD
     "name": "projeto-star-wars",
     "slug": "projeto-star-wars",
-=======
-    "name": "projeto-starwars",
-    "slug": "projeto-starwars",
->>>>>>> bb5e5464ad308ec1ac6d127659d7244cf71f78dd
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,13 +24,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-<<<<<<< HEAD
     },
     "plugins": [
       "expo-audio"
     ]
-=======
-    }
->>>>>>> bb5e5464ad308ec1ac6d127659d7244cf71f78dd
   }
 }
