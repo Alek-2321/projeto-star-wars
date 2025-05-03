@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
 
+
+//A api indicada não estava acessível nem na minha máquina, na da Atitus e nem na máquina do meu colega, impossibilitando-nos de fazer os testes devidos. 
+//Portanto usamos está provisória para os testes e funcionou perfeitamente. 
+//Temos vídeo do app funcionando se precisar.  Abraço!!
+
+
 export default function Filmes({ route, navigation }) {
   const { filmesUrl, characterName } = route.params;
   const [filmes, setFilmes] = useState(null);

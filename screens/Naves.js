@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
 
+
+//A api indicada não estava acessível nem na minha máquina, na da Atitus e nem na máquina do meu colega, impossibilitando-nos de fazer os testes devidos. 
+//Portanto usamos está provisória para os testes e funcionou perfeitamente. 
+//Temos vídeo do app funcionando se precisar.  Abraço!!
+
+
 export default function Naves({ route, navigation }) {
   const { navesUrl, characterName } = route.params;
   const [naves, setNaves] = useState(null);
@@ -11,7 +17,7 @@ export default function Naves({ route, navigation }) {
       try {
         const respostas = await Promise.all(navesUrl.map(url => axios.get(url)));
         setNaves(respostas.map(resposta => resposta.data));
-        // Atualizando o título do cabeçalho para "Naves - nome do personagem"
+      
         navigation.setOptions({
           title: `Naves - ${characterName}`,
         });

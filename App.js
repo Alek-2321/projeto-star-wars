@@ -8,6 +8,10 @@ import Filmes from './screens/Filmes';
 import Naves from './screens/Naves';
 import Sobre from './screens/Sobre';
 
+//A api indicada não estava acessível nem na minha máquina, na da Atitus e nem na máquina do meu colega, impossibilitando-nos de fazer os testes devidos. 
+//Portanto usamos está provisória para os testes e funcionou perfeitamente. 
+//Temos vídeo do app funcionando se precisar.  Abraço!!
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -41,23 +45,23 @@ export default function App() {
           name="Detalhes"
           component={Detalhes}
           options={({ route }) => ({
-            title: `DETALHES - ${route.params.name}`, // Exibe "DETALHES - [Nome do Personagem]"
+            title: `DETALHES - ${route.params.name}`, 
           })}
         />
         <Stack.Screen
           name="Filmes"
           component={Filmes}
           options={({ route }) => ({
-            title: `FILMES - ${route.params.title}`, // Exibe "FILMES - [Nome do Filme]"
-            headerBackVisible: true, // Garante que o botão de voltar seja visível
+            title: `FILMES - ${route.params.title}`, 
+            headerBackVisible: true, 
           })}
         />
         <Stack.Screen
           name="Naves"
           component={Naves}
           options={({ route }) => ({
-            title: `NAVES - ${route.params.title}`, // Exibe "NAVES - [Nome da Nave]"
-            headerBackVisible: true, // Garante que o botão de voltar seja visível
+            title: `NAVES - ${route.params.title}`, 
+            headerBackVisible: true, 
           })}
         />
         <Stack.Screen

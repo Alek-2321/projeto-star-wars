@@ -1,8 +1,13 @@
-// screens/Personagens.js
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import axios from 'axios';
 import PersonagemCard from '../components/PersonagemCard';
+
+
+//A api indicada não estava acessível nem na minha máquina, na da Atitus e nem na máquina do meu colega, impossibilitando-nos de fazer os testes devidos. 
+//Portanto usamos está provisória para os testes e funcionou perfeitamente. 
+//Temos vídeo do app funcionando se precisar.  Abraço!!
+
 
 export default function Personagens({ navigation }) {
   const [personagens, setPersonagens] = useState([]);

@@ -1,7 +1,12 @@
-// screens/Sobre.js
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
+
+
+//A api indicada não estava acessível nem na minha máquina, na da Atitus e nem na máquina do meu colega, impossibilitando-nos de fazer os testes devidos. 
+//Portanto usamos está provisória para os testes e funcionou perfeitamente. 
+//Temos vídeo do app funcionando se precisar.  Abraço!!
+
 
 export default function Sobre() {
   const soundRef = useRef();
