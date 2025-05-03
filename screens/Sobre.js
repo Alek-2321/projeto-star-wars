@@ -1,34 +1,80 @@
-import React from 'react';
+// screens/Sobre.js
+import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Audio } from 'expo-av';
 
 export default function Sobre() {
+  const soundRef = useRef();
+
+  useEffect(() => {
+    const tocarMusica = async () => {
+      const { sound } = await Audio.Sound.createAsync(
+        require('../assets/star-wars-intro.mp3')
+      );
+      soundRef.current = sound;
+      await sound.playAsync();
+    };
+
+    tocarMusica();
+
+    return () => {
+      if (soundRef.current) {
+        soundRef.current.stopAsync();
+        soundRef.current.unloadAsync();
+      }
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
+      <Text style={styles.titulo}>Desenvolvedores</Text>
 
-      <Text style={styles.texto}>
-        Este aplicativo foi criado com React Native e Expo, utilizando a API SWAPI para explorar o universo de Star Wars.
-      </Text>
+      <View style={styles.card}>
+        <Text style={styles.nome}>Alex Rodrigues Gonçalves</Text>
+        <Text style={styles.info}>RA: 1136919</Text>
+        <Text style={styles.info}>Email: 1136919@atitus.edu.br</Text>
+        <Text style={styles.info}>Função: Dev</Text>
+      </View>
 
-      <Text style={styles.text}>Informações sobre o app Star Wars!</Text>
-
+      <View style={styles.card}>
+        <Text style={styles.nome}>João Vitor Parizotto Benedetti</Text>
+        <Text style={styles.info}>RA: 1136044</Text>
+        <Text style={styles.info}>Email: 1136044@atitus.edu.br</Text>
+        <Text style={styles.info}>Função: Dev</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
-  container: { flex: 1, backgroundColor: '#000', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  texto: { color: '#fff', fontSize: 16, textAlign: 'center' },
-
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#000',
+    padding: 16,
   },
-  text: {
+  titulo: {
+    color: '#FFD700',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  card: {
+    backgroundColor: '#1a1a1a',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FFD700',
+  },
+  nome: {
     color: '#FFD700',
     fontSize: 18,
+    fontWeight: 'bold',
   },
-
+  info: {
+    color: '#fff',
+    fontSize: 16,
+    marginTop: 4,
+  },
 });

@@ -1,36 +1,40 @@
-// screens/Filmes.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
 
-export default function Filmes({ route }) {
-  const { filmesUrl } = route.params;
-  const [filmes, setFilmes] = useState([]);
+export default function Filmes({ route, navigation }) {
+  const { filmesUrl, characterName } = route.params;
+  const [filmes, setFilmes] = useState(null);
 
   useEffect(() => {
     const fetchFilmes = async () => {
       try {
-        const responses = await Promise.all(filmesUrl.map(url => axios.get(url)));
-        setFilmes(responses.map(r => r.data));
+        const respostas = await Promise.all(filmesUrl.map(url => axios.get(url)));
+        setFilmes(respostas.map(resposta => resposta.data));
+        navigation.setOptions({
+          title: `Filmes - ${characterName}`,
+        });
       } catch (erro) {
         console.error('Erro ao carregar filmes:', erro);
       }
     };
-    fetchFilmes();
-  }, []);
 
-  if (!filmes.length) {
+    fetchFilmes();
+  }, [filmesUrl, characterName, navigation]);
+
+  if (!filmes) {
     return <ActivityIndicator size="large" color="#FFD700" />;
   }
 
   return (
     <ScrollView style={styles.container}>
-      {filmes.map((f, i) => (
-        <View key={i} style={styles.card}>
-          <Text style={styles.titulo}>{f.title}</Text>
-          <Text style={styles.info}>Diretor: {f.director}</Text>
-          <Text style={styles.info}>Produtor: {f.producer}</Text>
-          <Text style={styles.info}>Lançamento: {f.release_date}</Text>
+      {filmes.map(filme => (
+        <View key={filme.url} style={styles.cardContainer}>
+          <Text style={styles.tituloFilme}>{filme.title}</Text>
+          <Text style={styles.info}>Episódio: {filme.episode_id}</Text>
+          <Text style={styles.info}>Ano de Lançamento: {filme.release_date}</Text>
+          <Text style={styles.info}>Diretor: {filme.director}</Text>
+          <Text style={styles.info}>Produtores: {filme.producer}</Text>
         </View>
       ))}
     </ScrollView>
@@ -38,8 +42,29 @@ export default function Filmes({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000', padding: 16 },
-  card: { backgroundColor: '#1c1c1c', padding: 16, borderRadius: 10, marginBottom: 10 },
-  titulo: { color: '#FFD700', fontSize: 18, fontWeight: 'bold' },
-  info: { color: '#fff', marginTop: 5 },
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    padding: 16,
+  },
+  cardContainer: {
+    backgroundColor: '#222',
+    borderRadius: 8,
+    marginBottom: 16,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  tituloFilme: {
+    color: '#FFD700',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  info: {
+    color: '#fff',
+    fontSize: 16,
+    marginTop: 5,
+  },
 });
